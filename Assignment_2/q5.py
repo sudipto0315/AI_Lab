@@ -1,0 +1,8 @@
+input_file=open("Assignment_2/text.txt","r")
+output_file=open("Assignment_2/output.txt","w+")
+output_file.write(input_file.read())
+output_file.seek(0)
+print("This text was copied to the output.txt file: ")
+print(output_file.read())
+input_file.close()
+output_file.close()
