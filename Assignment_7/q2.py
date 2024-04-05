@@ -1,54 +1,93 @@
-import numpy as np
+import random
+import time
 
-def initialize_population(N, k):
-    population = []
-    for _ in range(N):
-        chromosome = np.random.randint(0, k)
-        population.append(chromosome)
-    return np.array(population)
+total_time = 0
 
-def calculate_diversity(groups):
-    diversities = []
-    for group in groups:
-        diversity = np.std(group)
-        diversities.append(diversity)
-    return diversities
+mutation_probability = random.random()
+crossover_probability = random.random()
 
-def fitness_function(groups):
-    diversities = calculate_diversity(groups)
-    return np.mean(diversities)
+for _ in range(5):
 
-def crossover(parent1, parent2):
-    crossover_point = np.random.randint(1, len(parent1))
-    child1 = np.concatenate((parent1[:crossover_point], parent2[crossover_point:]))
-    child2 = np.concatenate((parent2[:crossover_point], parent1[crossover_point:]))
-    return child1, child2
+    start_time = time.time()
+    file = open("performance.txt", "a")
 
-def mutate(child, mutation_rate, k):
-    for i in range(len(child)):
-        if np.random.rand() < mutation_rate:
-            child[i] = np.random.randint(0, k)
-    return child
+    def calculate_diversity(group):
+        diversity = 0
+        for i in range(len(group)):
+            for j in range(i+1, len(group)):
+                diversity += (abs(group[i] - group[j]))**2
+        return diversity
 
-def divide_students(N, k, population_size, num_generations, crossover_rate, mutation_rate):
-    population = [initialize_population(N, k) for _ in range(population_size)]
-    for _ in range(num_generations):
-        fitness_scores = [fitness_function(population) for population in population]
-        sorted_indices = np.argsort(fitness_scores)
-        parents = [population[i] for i in sorted_indices[:2]]
-        next_generation = []
-        for i in range(0, len(parents), 2):
-            child1, child2 = crossover(parents[i], parents[i+1])
-            child1 = mutate(child1, mutation_rate, k)
-            child2 = mutate(child2, mutation_rate, k)
-            next_generation.extend([child1, child2])
-        population = next_generation
-    best_solution = population[np.argmin([fitness_function(population) for population in population])]
-    return best_solution, calculate_diversity(best_solution)
+    def fitness(chromosome, marks, k):
+        groups = [[] for _ in range(k)]
+        for i, group in enumerate(chromosome):
+            groups[group].append(marks[i])
+        return 1 / sum(calculate_diversity(group) for group in groups)
 
-N = 100  # Number of students
-k = 5    # Number of groups
+    def selection(population, fitnesses):
+        return random.choices(population, weights=fitnesses, k=len(population))
 
-best_solution, diversities = divide_students(N, k, population_size=100, num_generations=1000, crossover_rate=0.8, mutation_rate=0.1)
-print("Group assignment:", best_solution)
-print("Diversities in each group:", diversities)
+    def crossover(parent1, parent2):
+        if random.random() < crossover_probability:
+            point = random.randint(1, len(parent1)-1)
+            return parent1[:point] + parent2[point:], parent2[:point] + parent1[point:]
+        else:
+            return parent1, parent2
+
+    def mutation(chromosome, k):
+        if random.random() < mutation_probability:
+            index = random.randrange(len(chromosome))
+            group = random.randrange(k)
+            new_chromosome = list(chromosome)
+            new_chromosome[index] = group
+            return new_chromosome
+        else:
+            return chromosome
+
+    def genetic_algorithm(marks, n, k, pop_size=100, gen_limit=100):
+        population = [[random.randrange(k) for _ in range(n)] for _ in range(pop_size)]
+        for _ in range(gen_limit):
+            fitnesses = [fitness(chromosome, marks, k) for chromosome in population]
+            population = selection(population, fitnesses)
+            new_population = []
+            for i in range(0, len(population), 2):
+                offspring1, offspring2 = crossover(population[i], population[i+1])
+                new_population.append(mutation(offspring1, k))
+                new_population.append(mutation(offspring2, k))
+            population = new_population
+        best_chromosome = max(population, key=lambda chromosome: fitness(chromosome, marks, k))
+        return best_chromosome
+
+    n = random.randint(10, 100)
+    k = random.randint(2, 10)
+    marks = [random.randint(1, 100) for i in range(n)]
+
+    print("The number of students are:", n)
+    print("The number of groups are:", k)
+    print("The marks are:", marks)
+
+    groups = genetic_algorithm(marks, n, k)
+    print("The groups are:", groups)
+
+    end_time = time.time()
+
+    print()
+    print("Time taken:", end_time - start_time)
+
+    file.write("Number of students: " + str(n) + "\n")
+    file.write("Number of groups: " + str(k) + "\n")
+    file.write("Marks: " + str(marks) + "\n")
+    file.write("Mutation Probability: " + str(mutation_probability) + "\n")
+    file.write("Crossover Probability: " + str(crossover_probability) + "\n")
+    file.write("Groups: " + str(groups) + "\n")
+    file.write("Technique used: Genetic Algorithm\n\n")
+    file.write("Mutation Operator: Random Mutation\n")
+    file.write("Crossover Operator: Single Point Crossover\n")
+    file.write("\nTime taken: " + str(end_time - start_time) + "\n\n\n")
+    file.close()
+    total_time += end_time - start_time
+
+print("Average time taken:", total_time / 5)
+
+file = open("performance.txt", "a")
+file.write("Average time taken: " + str(total_time / 5) + "\n\n")
