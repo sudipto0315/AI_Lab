@@ -6,8 +6,8 @@ Q = np.random.rand(106, 104)
 
 Q_transpose = np.transpose(Q)
 
-result = np.zeros((106, 106))
-
+result = np.zeros((106, 106)) # Initialize the result matrix with zeros
+# why 106*106 not 106*104? Because the result of matrix multiplication of P and Q_transpose will be a 106*106 matrix
 start_time1 = time.time()
 
 for i in range(106):
@@ -20,7 +20,7 @@ end_time1 = time.time()
 print("Time taken by loop-based matrix multiplication: ", end_time1 - start_time1)
 
 start_time2 = time.time()
-result_vector = np.dot(P, Q_transpose)
+result_vector = np.dot(P, Q_transpose) # dot product of P and Q_transpose
 end_time2 = time.time()
 
 print("Time taken by vectorized matrix multiplication: ", end_time2 - start_time2)

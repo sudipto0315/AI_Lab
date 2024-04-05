@@ -1,5 +1,5 @@
 # Take a number as input
-number = int(raw_input("Enter a number: "))
+number = int(input("Enter a number: "))
 
 # Check if the number is even or odd
 if number % 2 == 0:

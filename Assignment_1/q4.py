@@ -1,10 +1,10 @@
 list=[1,2,3,4,5,6]
 print (type(list))
 for i in range(len(list)):
-    print list[i],
+    print (list[i])
 print
 for i in range(2,len(list)):
-    print list[i],
+    print (list[i])
 print
 # Inserting element 40 into the middle of the list
 middle_index = len(list) // 2

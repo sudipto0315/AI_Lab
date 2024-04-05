@@ -7,8 +7,9 @@ arr = np.array([[1, 2, 3],
                 [7, 8, 9]])
 
 # Extracting the second column and the last row
-second_column = arr[:, 1]
-last_row = arr[-1, :]
+second_column = arr[:,1]
+last_row = arr[-1]
+temp = arr[1,-1]
 
 # Displaying the extracted parts
 print("Original Array:")
@@ -19,3 +20,6 @@ print(second_column)
 
 print("\nLast Row:")
 print(last_row)
+
+print("\nLast element of the second column:")
+print(temp)

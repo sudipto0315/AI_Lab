@@ -12,7 +12,7 @@ arr_2d = np.array([[1, 2, 3, 2, 1, 4],
 arr_flat = arr_2d.flatten()
 
 # Find unique values and their counts
-unique_values, counts = np.unique(arr_flat, return_counts=True)
+unique_values, counts = np.unique(arr_flat, return_counts=True) # return_counts=True returns the counts of each unique value
 
 # Displaying the results
 print("Original 2D Array:")

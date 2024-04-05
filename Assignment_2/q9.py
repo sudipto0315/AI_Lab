@@ -4,7 +4,7 @@ import numpy as np
 matrix = np.random.rand(8, 7)
 
 # Find the maximum value from each feature
-max_values = np.max(matrix, axis=0)
+max_values = np.max(matrix, axis=0) # axis=0 means column-wise
 
 # Find the minimum value from each feature
 min_values = np.min(matrix, axis=0)

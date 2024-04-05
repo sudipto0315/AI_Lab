@@ -1,0 +1,3 @@
+Hello, this is a sample text file.
+It contains several words, lines, and spaces.
+This is another line in the file.
