@@ -1,0 +1,10 @@
+Implement genetic algorithm and simulated annealing to solve 8 queens problem and compare the results in terms of time and space complexity
+
+Note1(For genetic algorithm):-
+ENCODING:Real Number
+SELECTION:Elitism
+CROSSOVER:2 Points
+MUTATION:Swap Mutation
+
+Note2(For simulated annealing):-
+Initial temperature and Rate of cooling will be a user input
